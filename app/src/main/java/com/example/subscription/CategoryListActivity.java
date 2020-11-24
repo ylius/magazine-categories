@@ -23,6 +23,7 @@ public class CategoryListActivity extends AppCompatActivity {
         toolbar.setTitle("Magazine");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -41,5 +42,7 @@ public class CategoryListActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.fragment_container, new CategoryListFragment()).commit();
         }
+
+
     }
 }
