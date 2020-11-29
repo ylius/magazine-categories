@@ -1,12 +1,14 @@
 package com.example.subscription;
 
 import android.content.Context;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,6 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
+import android.os.Handler;
+import java.util.logging.LogRecord;
 
 public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int CATEGORY_DATA = 1;
@@ -62,7 +66,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof CategoryDataViewHolder) {
-            CategoryDataViewHolder categoryDataViewHolder = (CategoryDataViewHolder) holder;
+            final CategoryDataViewHolder categoryDataViewHolder = (CategoryDataViewHolder) holder;
             Category category = mCategories.get(position);
 
             categoryDataViewHolder.ivImageUrl.setImageResource(R.drawable.ic_launcher_background);
@@ -70,7 +74,35 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             categoryDataViewHolder.btnSubscribe.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    CustomToast.INSTANCE.showToast(mContext, "Haha");
+                    final Handler handler = new Handler() {
+                        @Override
+                        public void handleMessage(@NonNull Message msg) {
+                            String btnText = categoryDataViewHolder.btnSubscribe.getText().toString();
+                            if (btnText.equals("+")) {
+                                categoryDataViewHolder.btnSubscribe.setText("-");
+                                CustomToast.INSTANCE.showToast(mContext, "Subscribed");
+                            } else {
+                                categoryDataViewHolder.btnSubscribe.setText("+");
+                                CustomToast.INSTANCE.showToast(mContext, "Unsubscribed");
+                            }
+                            categoryDataViewHolder.progressBar.setVisibility(View.INVISIBLE);
+                            categoryDataViewHolder.btnSubscribe.setVisibility(View.VISIBLE);
+
+                        }
+                    };
+                    categoryDataViewHolder.btnSubscribe.setVisibility(View.INVISIBLE);
+                    categoryDataViewHolder.progressBar.setVisibility(View.VISIBLE);
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            try {
+                                Thread.sleep(1000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            handler.sendEmptyMessage(0);
+                        }
+                    }.start();
                 }
             });
         } else if (holder instanceof CategoryFooterViewHolder) {
@@ -91,6 +123,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         private final ImageView ivImageUrl = itemView.findViewById(R.id.iv_image_url);
         private final TextView tvChannelName = itemView.findViewById(R.id.tv_channel_name);
         private final Button btnSubscribe = itemView.findViewById(R.id.btn_subscribe);
+        private final ProgressBar progressBar = itemView.findViewById(R.id.progressBar);
 
         public CategoryDataViewHolder(@NonNull View itemView) {
             super(itemView);
