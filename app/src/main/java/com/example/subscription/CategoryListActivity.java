@@ -12,6 +12,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +28,8 @@ public class CategoryListActivity extends AppCompatActivity {
     private GridLayoutManager mGridLayoutManager;
     private List<Category> mCategories = new ArrayList<>();
     private int mLastLoadDataItemPosition;
+
+    private BottomNavigationView bnv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +83,9 @@ public class CategoryListActivity extends AppCompatActivity {
             }
         });
         mRvContent.setAdapter(mCategoryAdapter);
+
+        bnv = findViewById(R.id.bnv);
+        bnv.setItemIconTintList(null);
     }
 
     /**
