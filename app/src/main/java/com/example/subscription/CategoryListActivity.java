@@ -11,8 +11,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +31,7 @@ public class CategoryListActivity extends AppCompatActivity {
     private List<Category> mCategories = new ArrayList<>();
     private int mLastLoadDataItemPosition;
 
-    private BottomNavigationView bnv;
+    private TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,8 +86,29 @@ public class CategoryListActivity extends AppCompatActivity {
         });
         mRvContent.setAdapter(mCategoryAdapter);
 
-        bnv = findViewById(R.id.bnv);
-        bnv.setItemIconTintList(null);
+        tabLayout = findViewById(R.id.tabLayout);
+//        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.events).setText("Events").setTag(0));
+//        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.post).setText("Post").setTag(1));
+//        for (int i = 0; i < tabLayout.getChildCount(); i++)
+//        {
+//            tabLayout.getChildAt(i).setPadding(10,10,10,10);
+//        }
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                Toast.makeText(CategoryListActivity.this, tab.getText(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
     }
 
     /**
